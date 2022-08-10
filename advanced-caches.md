@@ -7,7 +7,7 @@ sidebar_label: Advanced Caches
 [🔗Lecture on Udacity (1.5 hr)](https://classroom.udacity.com/courses/ud007/lessons/1080508587/concepts/last-viewed)
 
 ## Improving Cache Performance
-Average Memory Access Time: \\(\text{AMAT} = \text{hit time} + \text{miss rate} * \text{miss penalty} \\)
+Average Memory Access Time: $\text{AMAT} = \text{hit time} + \text{miss rate} * \text{miss penalty}$
 - Reduce hit time
 - Reduce miss rate
 - Reduce miss penalty
@@ -54,28 +54,28 @@ Depending on how the cache is constructed, it is possible to avoid aliasing issu
 ![VIPT Cache Aliasing](https://i.imgur.com/Oq5TWi4.png)
 
 ## Real VIPT Caches
-\\(\text{Cache Size} \leq \text{Associativity} * \text{Page Size}\\)
+$\text{Cache Size} \leq \text{Associativity} * \text{Page Size}$
 - Pentium 4:
-  - 4-way SA x 4kB \\(\Rightarrow\\) L1 is 16kB
+  - 4-way SA x 4kB $\Rightarrow$ L1 is 16kB
 - Core 2, Nehalem, Sandy Bridge, Haswell:
-  - 8-way SA x 4kB \\(\Rightarrow\\) L1 is 32kB
+  - 8-way SA x 4kB $\Rightarrow$ L1 is 32kB
 - Skylake (rumored):
-  - 16-way SA x ?? \\(\Rightarrow\\) L1 is 64kB
+  - 16-way SA x ?? $\Rightarrow$ L1 is 64kB
 
 ## Associativity and Hit Time
 - High Associativity:
-  - Fewer conflicts \\(\rightarrow\\) Miss Rate \\(\downarrow\\) (good)
-  - Larger VIPT Caches \\(\rightarrow\\) Miss Rate \\(\downarrow\\) (good)
+  - Fewer conflicts $\rightarrow$ Miss Rate $\downarrow$ (good)
+  - Larger VIPT Caches $\rightarrow$ Miss Rate $\downarrow$ (good)
   - Slower hits (bad)
 - Direct Mapped:
-  - Miss Rate \\(\uparrow\\) (bad)
-  - Hit Time \\(\downarrow\\) (good)
+  - Miss Rate $\uparrow$ (bad)
+  - Hit Time $\downarrow$ (good)
 
 Can we cheat on associativity to take the good things from high associativity and also get better hit time from direct mapped?
 
 ## Way Prediction
-- Set-Associative Cache (miss rate \\(\downarrow\\))
-- Guess which line in the set is the most likely to hit (hit time \\(\downarrow\\))
+- Set-Associative Cache (miss rate $\downarrow$)
+- Guess which line in the set is the most likely to hit (hit time $\downarrow$)
 - If no hit there, normal set-associative check
 
 ### Way Prediction Performance
@@ -84,14 +84,14 @@ Can we cheat on associativity to take the good things from high associativity an
 | Hit Rate     | 90% | 70% |   90%  | 
 | Hit Latency  |  2  |  1  | 1 or 2 |
 | Miss Penalty | 20  | 20  |   20   |
-| AMAT         |  4<br />(\\(2+0.1\*20\\)) | 7<br />(\\(1+0.3\*20\\)) | 3.3 (1.3+2)<br />(\\(0.7\*1+0.3\*2+0.1\*20\\))
+| AMAT         |  4<br />(2+0.1\*20) | 7<br />(1+0.3\*20) | 3.3 (1.3+2)<br />(0.7\*1+0.3\*2+0.1\*20)
 
 ## Replacement Policy and Hit Time
 - Random 
   - Nothing to update on cache hit (good)
-  - Miss Rate \\(\uparrow\\) (bad)
+  - Miss Rate $\uparrow$ (bad)
 - LRU
-  - Miss Rate \\(\downarrow\\) (good)
+  - Miss Rate $\downarrow$ (good)
   - Update lots of counters on hit (bad)
 - We want benefit of LRU miss rate, but we need less activity on a cache hit
 
@@ -130,8 +130,8 @@ Three Cs:
 
 ## Larger Cache Blocks
 - More words brought in on a miss
-  - Miss Rate \\(\downarrow\\) when spatial locality is good (good)
-  - Miss Rate \\(\uparrow\\) when spatial locality is poor (bad)
+  - Miss Rate $\downarrow$ when spatial locality is good (good)
+  - Miss Rate $\uparrow$ when spatial locality is poor (bad)
   - As block size increases, miss rate decreases for awhile, and then begins to increase again. 
     - The local minima is the optimal block size (64B on a 4kB cache)
     - For larger caches, the minima will occur at a much higher block size (e.g. 256B for 256kB)
@@ -168,8 +168,8 @@ Reduces Miss Penalty. A good out of order procesor will continue doing whatever 
 - Miss Status Handling Registers (MSHRs)
   - Info about ongoing misses
   - Check MSHRs to see if any match
-    - No Match (Miss) \\(\Rightarrow\\) Allocate an MSHR, remember which instruction to wake up
-    - Match (Half-Miss) \\(\Rightarrow\\) Add instruction to MSHR
+    - No Match (Miss) $\Rightarrow$ Allocate an MSHR, remember which instruction to wake up
+    - Match (Half-Miss) $\Rightarrow$ Add instruction to MSHR
   - When data comes back, wake up all instructions waiting on this data, and release MSHR
 - How many MSHRs do we want?
   - 2 is good, 4 is even better, and there are still benefits from level larger amount like 16-32.
@@ -177,20 +177,20 @@ Reduces Miss Penalty. A good out of order procesor will continue doing whatever 
 ## Cache Hierarchies
 Reduces Miss Penalty. Multi-Level Caches:
 - Miss in L1 cache goes to L2 cache
-  - L1 miss penalty \\(\neq\\) memory latency
+  - L1 miss penalty $\neq$ memory latency
   - L1 miss penalty = L2 Hit Time + (L2 Miss Rate)*(L2 Miss Penalty)
 - Can have L3, L4, etc.
 
 ### AMAT With Cache Hierarchies
-\\(\text{AMAT} = \text{L1 hit time} + \text{L1 miss rate} * \text{L1 miss penalty} \\)
+$\text{AMAT} = \text{L1 hit time} + \text{L1 miss rate} * \text{L1 miss penalty}$
 
-\\(\text{L1 Miss Penalty} = \text{L2 hit time} + \text{L2 miss rate} * \text{L2 miss penalty} \\)
+$\text{L1 Miss Penalty} = \text{L2 hit time} + \text{L2 miss rate} * \text{L2 miss penalty}$
 
-\\(\text{L2 Miss Penalty} = \text{L3 hit time} + \text{L3 miss rate} * \text{L3 miss penalty} \\)
+$\text{L2 Miss Penalty} = \text{L3 hit time} + \text{L3 miss rate} * \text{L3 miss penalty}$
 
 ... etc, until:
 
-\\(\text{LN Miss Penalty} = \text{Main Memory Latency}\\) (Last Level Cache - LLC)
+$\text{LN Miss Penalty} = \text{Main Memory Latency}$ (Last Level Cache - LLC)
 
 ### Multilevel Cache Performance
 
@@ -199,7 +199,7 @@ Reduces Miss Penalty. Multi-Level Caches:
 | Hit Time |   2  |  10   |    100   |  2 for L1<br />12 for L2   |
 | Hit Rate |  90% | 97.5% |   100%   | 90% for L1<br />75% for L2 |
 | AMAT     |  12  |  12.5 |    100   |         5.5                |
-| (calc))  | \\(2+0.1\*100\\) | \\(10+0.025\*100\\) | \\(100+0\*100\\) | \\(2+0.1\*(10+0.25*100)\\)
+| (calc))  | 2+0.1\*100 | 10+0.025\*100 | 100+0\*100 | 2+0.1\*(10+0.25*100)
 
 Combining caches like this provide much better overall performance than just considering hit time and size.
 
@@ -212,8 +212,8 @@ When L2 cache is used alone, it has a higher hit rate (97.5% vs 75%) - so it loo
 
 ### Global vs. Local Hit Rate
 - Global Hit Rate:  1 - Global Miss Rate
-- Global Miss Rate: \\(\frac{\text{# of misses in this cache}}{\text{# of all memory references}}\\)
-- Local Hit Rate: \\(\frac{\text{# of hits}}{\text{# of accesses to this cache}}\\)
+- Global Miss Rate: $\frac{\text{number of misses in this cache}}{\text{number of all memory references}}$
+- Local Hit Rate: $\frac{\text{number of hits}}{\text{number of accesses to this cache}}$
 - Misses per 1000 instructions (MPKI)
   - Similar to Miss Rate, but instead of being based on memory references, it normalizes based on number of instructions
 
